@@ -4,15 +4,17 @@ shinyUI(fluidPage(
   titlePanel("Old Faithful Geyser Data"),
   sidebarLayout(
     sidebarPanel(
-       sliderInput("bins",
-                   "Number of bins:",
-                   min = 1,
-                   max = 50,
-                   value = 30)
-    ),
+      selectInput(
+        "sel_site",
+        "Site",
+        unique(raw$Chemistry$StationID)),
+      selectInput(
+        "sel_parameter",
+        "Parameter",
+        unique(raw$Chemistry$ParameterCode))),
     mainPanel(
-      leafletOutput("map"),
+      dygraphOutput("ts"), 
       p(),
-      dygraphOutput("ts") 
+      leafletOutput("map")
     ))
 ))
