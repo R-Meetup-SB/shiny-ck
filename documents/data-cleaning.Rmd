@@ -42,7 +42,8 @@ streams$sitelist <- streams$sitelist %>%
 ```{r}
 
 chemistry <- streams$chemistry %>% 
-  mutate(ParameterCode = tolower(ParameterCode)) %>% 
+  mutate(ParameterCode = tolower(ParameterCode),
+         StationID = toupper(StationID)) %>% 
   mutate(Result = if_else(Units == "Def F" | Result > 40, (Result - 32) * (5/9), Result)) %>%
   filter(!(ParameterCode == "ph" & Result > 14))
 
@@ -56,7 +57,24 @@ saveRDS(chemistry, file = here::here("processed_data","chemistry.RDS"))
 
 ```
 
-Problems
 
-- someone entered do instead of DO
+```{r}
+
+names <- streams$nutrients %>% 
+  colnames() %>% 
+  stringr::str_replace_all(" ","")
+
+nutrients <- streams$nutrients %>% 
+  set_names(names) %>% 
+  mutate(ParameterCode = tolower(ParameterCode),
+         StationID = toupper(StationID))  
+  nutrients %>% 
+  ggplot(aes(Result, fill = ParameterCode)) + 
+  geom_histogram() + 
+  facet_wrap(~ParameterCode, scales = "free")
+
+saveRDS(nutrients, file = here::here("processed_data","nutrients.RDS"))
+
+  
+```
 
