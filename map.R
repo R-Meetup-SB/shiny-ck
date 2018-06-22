@@ -1,5 +1,7 @@
 library(leaflet)
 
+data = readxl::read_xlsx("./shiny-ck/data/hackathon_20180621.xlsx", sheet = 4)
+
 pop <- paste(
   paste("<Watershed:</strong>", data$Watershed),
   paste("<strong>Creek:</strong>", data$`Creek or Stream`),
