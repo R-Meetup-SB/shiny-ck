@@ -1,12 +1,21 @@
 library(leaflet)
 
-data = readxl::read_xlsx("./shiny-ck/data/hackathon_20180621.xlsx", sheet = 4)
+
+load("/Users/mikejohnson/Documents/GitHub/shiny-ck/data/huc12.rda")
+load("/Users/mikejohnson/Documents/GitHub/shiny-ck/data/locations.rda")
+
 
 pop <- paste(
-  paste("<Watershed:</strong>", data$Watershed),
+  paste("<strong>Watershed:</strong>", data$Watershed),
   paste("<strong>Creek:</strong>", data$`Creek or Stream`),
   paste("<strong>Site Name:</strong>", data$`Site Name`),
   paste("<strong>Site Name:</strong>", data$`Site Code`),
+  sep = "<br/>"
+)
+
+ll = paste(
+  paste("<strong>Name:</strong>", huc$Name),
+  paste("<strong>HUC12:</strong>", huc$HUC12),
   sep = "<br/>"
 )
 
@@ -24,9 +33,28 @@ m = leaflet() %>%
     primaryAreaUnit = "sqmiles",
     activeColor = "red",
     completedColor = "green"
-  )  %>% addMarkers(data = locs, lng = locs$lon, lat = locs$lat, popup = pop ) %>% addLayersControl(
+  )  %>% addMarkers(data = data, lng = data$lon, lat = data$lat, popup = pop ) %>% 
+  addPolygons(   data = huc,   fillColor = "lightblue",
+                    color = "black",
+                    stroke = TRUE,
+                    weight = 4,
+                    opacity = 1,
+                    fillOpacity = .5,
+                    smoothFactor = 0.7,
+                    popup = ll,
+                    group = "WBD",
+                    highlight = highlightOptions(
+                      weight = 5,
+                      color = "darkred",
+                      fillOpacity = 0.7,
+                      bringToFront = TRUE
+                    )) %>% 
+  
+  addLayersControl(
     baseGroups = c("Base", "Imagery", "Terrain"),
     options = layersControlOptions(collapsed = T)
-  )
+  )  
+
+m
 
 
