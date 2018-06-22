@@ -1,8 +1,6 @@
-library(leaflet)
 
-
-load("/Users/mikejohnson/Documents/GitHub/shiny-ck/data/huc12.rda")
-load("/Users/mikejohnson/Documents/GitHub/shiny-ck/data/locations.rda")
+load("data/huc12.rda")
+load("data/locations.rda")
 
 
 pop <- paste(
