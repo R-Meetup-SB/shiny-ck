@@ -13,6 +13,11 @@ Shiny app for Channel Keeper
 
 ![](./dygraph-threshold.png)
 
+### Horizontal Exceedences
+
+- hi N (better than P), hi P, **lo DO** (fish killer), hi Ph
+
 ## Make it Shiny
 
 Start with Rmarkdown output, link map to time series with Shiny.
+
