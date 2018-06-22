@@ -1,0 +1,62 @@
+---
+title: "clean-data"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(skimr)
+
+sheets <- excel_sheets(here::here("data","hackathon_20180621.xlsx"))
+
+streams <- map(sheets, ~read_xlsx(here::here("data","hackathon_20180621.xlsx"), sheet = .x)) %>% 
+  set_names(tolower(sheets))
+
+skim(streams$bacteria)
+
+```
+
+Let's find the sites
+
+string_trim
+
+```{r}
+
+site_locations <- str_split(streams$sitelist$`Geographic Coordinates (Decimal Degrees)`,",", simplify = T) %>% 
+  as_data_frame() %>% 
+  map_df(~str_replace(.x," ",""))  %>% 
+  purrrlyr::dmap_if(is.character, as.numeric) %>% 
+  set_names("longitude","latitude")
+
+
+streams$sitelist <- streams$sitelist %>% 
+  bind_cols(site_locations)
+
+# ggmap::qmplot(longitude, latitude, data = streams$sitelist)
+
+
+```
+
+
+```{r}
+
+chemistry <- streams$chemistry %>% 
+  mutate(ParameterCode = tolower(ParameterCode)) %>% 
+  mutate(Result = if_else(Units == "Def F" | Result > 40, (Result - 32) * (5/9), Result)) %>%
+  filter(!(ParameterCode == "ph" & Result > 14))
+
+
+chemistry %>% 
+  ggplot(aes(Result, fill = ParameterCode)) + 
+  geom_histogram() + 
+  facet_wrap(~ParameterCode, scales = "free")
+
+saveRDS(chemistry, file = here::here("processed_data","chemistry.RDS"))
+
+```
+
+Problems
+
+- someone entered do instead of DO
+
