@@ -1,5 +1,5 @@
 
-data = readxl::read_xlsx("/Users/mikejohnson/Desktop/hackathon_20180621.xlsx", sheet = 4)
+data = readxl::read_xlsx("/Users/mikejohnson/Documents/GitHub/shiny-ck/data/hackathon_20180621.xlsx", sheet = 4)
 
 sites = data$`Geographic Coordinates (Decimal Degrees)`
 
