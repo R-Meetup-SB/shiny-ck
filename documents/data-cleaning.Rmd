@@ -44,10 +44,16 @@ streams$sitelist <- streams$sitelist %>%
 chemistry <- streams$chemistry %>% 
   mutate(ParameterCode = tolower(ParameterCode),
          StationID = toupper(StationID)) %>% 
-  mutate(Result = if_else(Units == "Def F" | Result > 40, (Result - 32) * (5/9), Result)) %>%
-  filter(!(ParameterCode == "ph" & Result > 14))
-
-
+  mutate(flag = case_when(
+    Units == "Deg F" ~ "temp_units",
+    ParameterCode == "temp" & Result > 40 ~ "temp_value",
+    ParameterCode == "ph" & Result > 14 ~ "ph_wild",
+    TRUE ~ "NA"
+  )) %>% 
+  # convert F to C (including numbers that seem too high to be c)
+  mutate(Result = if_else(Units == "Def F" | Result > 40, (Result - 32) * (5/9), Result)) %>% 
+  mutate(Result = ifelse(flag == "ph_wild", NA, Result))
+  
 chemistry %>% 
   ggplot(aes(Result, fill = ParameterCode)) + 
   geom_histogram() + 
@@ -68,13 +74,44 @@ nutrients <- streams$nutrients %>%
   set_names(names) %>% 
   mutate(ParameterCode = tolower(ParameterCode),
          StationID = toupper(StationID))  
-  nutrients %>% 
+   
+  
+nutrients%>% 
   ggplot(aes(Result, fill = ParameterCode)) + 
   geom_histogram() + 
   facet_wrap(~ParameterCode, scales = "free")
 
 saveRDS(nutrients, file = here::here("processed_data","nutrients.RDS"))
 
-  
 ```
+
+
+```{r}
+
+names <- streams$bacteria %>% 
+  colnames() %>% 
+  stringr::str_replace_all(" ","")
+
+bacteria <- streams$bacteria %>% 
+  set_names(names) %>% 
+  mutate(ParameterCode = tolower(ParameterCode),
+         StationID = toupper(StationID))  %>% 
+  mutate(ParameterCode = ifelse(ParameterCode == "e. coil",
+                               "e. coli",
+                               ParameterCode)) %>% 
+  filter(ParameterCode != "duplicate")
+
+bacteria %>% 
+  ggplot(aes(Result, fill = ParameterCode)) + 
+  geom_histogram() + 
+  facet_wrap(~ParameterCode, scales = "free")
+
+saveRDS(bacteria, file = here::here("processed_data","bacteria.RDS"))
+
+  #TODO: check that SampleType - RESULTS, Duplicate, Split are similar
+  # group_by(StationID, ParameterCode, SampleDate, SampleCollectionTime) %>% 
+  # count()
+
+```
+
 
