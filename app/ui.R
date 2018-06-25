@@ -1,7 +1,7 @@
 library(leaflet)
 
 shinyUI(fluidPage(
-  titlePanel("Shiny=CK"),
+  titlePanel("Santa Barbara Channel Keeper - Water Quality Monitoring Data"),
   sidebarLayout(
     sidebarPanel(
       selectInput(
