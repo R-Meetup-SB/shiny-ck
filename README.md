@@ -12,7 +12,7 @@ Shiny app for [Santa Barbara Channel Keeper Water Quality Monitoring Data](https
 - [ ] add exceedences (based on CentralCoastStandards, LABasinStandards tabs in xlsx) to dygraph using [dyLimit()](https://rstudio.github.io/dygraphs/gallery-event-lines.html)
 - [ ] color [leaflet markers on map](http://rstudio.github.io/leaflet/markers.html) based on number of times in exceedence of threshold in red scale, otherwise green
   - [ ] limit colorized map based on time window of dygraph time series plot and/or include [dateRangeInput]( https://shiny.rstudio.com/gallery/date-and-date-range.html)
-- embed / link app at https://www.sbck.org (eg with [iframe](https://community.rstudio.com/t/iframe-shiny-apps-to-wordpress/962))
+- [ ] embed / link app at https://www.sbck.org (eg with [iframe](https://community.rstudio.com/t/iframe-shiny-apps-to-wordpress/962))
 
 Current status:
 
