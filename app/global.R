@@ -11,12 +11,12 @@ library(sp)
 library(glue)
 
 # paths
-raw_xls  <- here("data/hackathon_20180621.xlsx")
-locs_rds <- here("data/locations.rda")
-huc_rds  <- here("data/huc.rds")
+raw_xls  <- "data/hackathon_20180621.xlsx"
+locs_rds <- "data/locations.rda"
+huc_rda  <- "data/huc12.rda"
 
 # get raw spreadsheet data
-raw <- map(excel_sheets(raw_xls), ~ read_excel(xls, .x), .id=.x)
+raw <- map(excel_sheets(raw_xls), ~ read_excel(raw_xls, .x), .id=.x)
 names(raw) <- excel_sheets(raw_xls)
 
 # get location data
@@ -30,5 +30,6 @@ sites[51, "lon"] = -119.2993
 sites[37, "lon"] = -119.2941
 
 # watersheds
+load(huc_rda)
 #huc <- read_rds(huc_rds)
 #plot(huc)

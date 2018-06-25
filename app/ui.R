@@ -1,7 +1,7 @@
 library(leaflet)
 
 shinyUI(fluidPage(
-  titlePanel("Old Faithful Geyser Data"),
+  titlePanel("Shiny=CK"),
   sidebarLayout(
     sidebarPanel(
       selectInput(

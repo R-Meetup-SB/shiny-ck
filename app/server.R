@@ -9,6 +9,12 @@ shinyServer(function(input, output) {
       paste("<strong>Site Name:</strong>", sites$`Site Code`),
       sep = "<br/>")
     
+    ll = paste(
+      paste("<strong>Name:</strong>", huc$Name),
+      paste("<strong>HUC12:</strong>", huc$HUC12),
+      sep = "<br/>"
+    )
+    
     m <- leaflet(sites) %>%
       addProviderTiles(providers$CartoDB.Positron, group = "Base") %>%
       addProviderTiles(providers$Esri.WorldImagery, group = "Imagery") %>%
@@ -27,7 +33,23 @@ shinyServer(function(input, output) {
         data = sites, lng = ~lon, lat = ~lat, popup = pop) %>% 
       addLayersControl(
         baseGroups = c("Base", "Imagery", "Terrain"),
-        options = layersControlOptions(collapsed = T))
+        overlayGroups = "HUC12",
+        options = layersControlOptions(collapsed = T)) %>% 
+      addPolygons(
+        data = huc,   fillColor = "lightblue",
+        color = "black",
+        stroke = TRUE,
+        weight = 4,
+        opacity = 1,
+        fillOpacity = .5,
+        smoothFactor = 0.7,
+        popup = ll,
+        group = "HUC12",
+        highlight = highlightOptions(
+          weight = 5,
+          color = "darkred",
+          fillOpacity = 0.7,
+          bringToFront = TRUE))
     m
     
   })
@@ -46,6 +68,8 @@ shinyServer(function(input, output) {
     dygraph(x, main = glue("{input$sel_site}: {input$sel_parameter}"))
     
   })
+  
+  #obser
   
 
 })

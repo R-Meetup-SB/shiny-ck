@@ -1,0 +1,12 @@
+name: sbck
+title: sbck
+username:
+account: bdbest
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 367059
+bundleId: 1448184
+url: https://bdbest.shinyapps.io/sbck/
+when: 1529953534.44875
+asMultiple: FALSE
+asStatic: FALSE
