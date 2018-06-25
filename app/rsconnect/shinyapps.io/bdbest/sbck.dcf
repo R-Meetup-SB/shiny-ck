@@ -5,8 +5,8 @@ account: bdbest
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 367059
-bundleId: 1448184
+bundleId: 1448196
 url: https://bdbest.shinyapps.io/sbck/
-when: 1529953534.44875
+when: 1529953915.75504
 asMultiple: FALSE
 asStatic: FALSE
